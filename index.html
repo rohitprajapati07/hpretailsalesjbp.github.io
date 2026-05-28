@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jabalpur Retail Region Sales Dashboard</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body data-page="home">
+    <div class="utility-strip">
+      <span>Jabalpur Retail Region</span>
+      <span>Daily sales monitoring</span>
+      <span>Sales unit: KL</span>
+    </div>
+    <header class="app-topbar hpcl-header">
+      <a class="brand-lockup" href="./index.html" aria-label="Jabalpur Retail Region Sales Dashboard home">
+        <img class="hpcl-logo" src="./assets/hpcl-logo.png" alt="Hindustan Petroleum logo">
+        <div class="brand-copy">
+          <span class="brand-kicker">Hindustan Petroleum</span>
+          <h1>Jabalpur Retail Region Sales Dashboard</h1>
+          <p>Retail outlet performance | MS / HSD / Power / Lube / DEF</p>
+        </div>
+      </a>
+      <nav class="topbar-actions">
+        <a class="ghost-button" href="./index.html">Home</a>
+        <a class="ghost-button" href="./register.html">Register</a>
+        <a class="ghost-button" href="./monthly-register.html">Monthly</a>
+        <a class="ghost-button" href="./historical.html">Historical</a>
+        <a class="ghost-button" href="./master.html">Master</a>
+      </nav>
+    </header>
+
+    <div class="page-shell">
+      <section class="retail-hero panel">
+        <div>
+          <p class="eyebrow">Welcome to HP Retail Sales</p>
+          <h2>Retail region performance cockpit</h2>
+          <p class="hero-text">
+            Track current month sales, compare against Hist. performance, review targets, and open detailed
+            outlet registers from one retail-style dashboard.
+          </p>
+        </div>
+        <div class="retail-quick-grid">
+          <a href="./register.html" class="retail-quick-card">
+            <strong>Daily register</strong>
+            <span>Date-wise outlet sales</span>
+          </a>
+          <a href="./monthly-register.html" class="retail-quick-card">
+            <strong>Monthly register</strong>
+            <span>Month and outlet view</span>
+          </a>
+          <a href="./historical.html" class="retail-quick-card">
+            <strong>Historical data</strong>
+            <span>MS, HSD, and Power Hist. view</span>
+          </a>
+          <a href="./master.html" class="retail-quick-card">
+            <strong>Master page</strong>
+            <span>Outlets, targets, backup</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="panel bars-panel target-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Sales targets</p>
+            <h2>Present vs target by area</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="download-target-png" type="button">Download PNG</button>
+            <button class="ghost-button" id="download-target-jpeg" type="button">Download JPEG</button>
+            <button class="ghost-button" id="export-target-excel" type="button">Export Excel</button>
+            <span class="panel-note">MS, HSD, and Power in one grouped view</span>
+          </div>
+        </div>
+        <div id="target-charts" class="bars-wrap area-donut-grid-wrap"></div>
+      </section>
+
+      <section class="metrics-grid" id="metrics-grid"></section>
+
+      <section class="panel bars-panel area-mix-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Sales area mix</p>
+            <h2>Present vs Hist. by area</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="share-dashboard-email" type="button">Share graphical email</button>
+            <button class="ghost-button" id="download-area-png" type="button">Download PNG</button>
+            <button class="ghost-button" id="download-area-jpeg" type="button">Download JPEG</button>
+            <button class="ghost-button" id="export-area-excel" type="button">Export Excel</button>
+            <span class="panel-note">MS, HSD, and Power in one grouped view</span>
+          </div>
+        </div>
+        <div id="area-bars" class="bars-wrap area-donut-grid-wrap"></div>
+      </section>
+
+      <section class="panel summary-panel nil-sale-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Nil sale outlets</p>
+            <h2>Outlet list with no sale</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="toggle-nil-sale" type="button">View nil sale outlets</button>
+            <span class="panel-note" id="nil-sale-count">0 outlets</span>
+          </div>
+        </div>
+        <div class="table-shell compact-table nil-sale-table-shell hidden" id="nil-sale-list-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Outlet</th>
+                <th>SAP code</th>
+                <th>Sales area</th>
+                <th>Active days</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="nil-sale-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel product-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Product snapshot</p>
+            <h2>Sales by product</h2>
+          </div>
+          <span class="panel-note">Live totals for the selected filters</span>
+        </div>
+        <div id="product-cards" class="product-card-grid"></div>
+        <p id="empty-products-note" class="subtle-note"></p>
+      </section>
+
+      <section class="panel register-link-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Generated register</p>
+            <h2>Open the full daily sales register on a separate page</h2>
+          </div>
+          <div class="toolbar-actions">
+            <a class="solid-button" href="./register.html">Open daily register</a>
+            <a class="ghost-button" href="./monthly-register.html">Open monthly register</a>
+            <a class="ghost-button" href="./historical.html">Open historical data</a>
+            <a class="ghost-button" href="./master.html">Open master page</a>
+          </div>
+        </div>
+        <p class="subtle-note">
+          The home page keeps your high-level view. The daily register is better for date-wise rows, while the monthly
+          register keeps the present, Hist., growth, and Power conversion view together by outlet and month. The
+          historical page shows the Hist. reference data directly.
+        </p>
+      </section>
+    </div>
+
+    <script src="./sales-data.js"></script>
+    <script src="./vendor/jszip.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+  </html>

@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Master Data Studio</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body data-page="master">
+    <div class="page-shell">
+      <header class="hero panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Master page</p>
+          <h1>Outlet, Hist., and target master data</h1>
+          <p class="hero-text">
+            Add newly appointed retail outlets, maintain their region details, enter manual Hist. values, and save
+            sales-area targets for home-page tracking.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-card">
+            <span>Data source</span>
+            <strong id="source-file">-</strong>
+          </div>
+          <div class="meta-card">
+            <span>Data period</span>
+            <strong id="source-period">-</strong>
+          </div>
+          <div class="meta-card">
+            <span>Generated</span>
+            <strong id="generated-at">-</strong>
+          </div>
+          <div class="meta-card">
+            <span>Master outlets</span>
+            <strong id="master-outlet-count">0</strong>
+          </div>
+          <div class="meta-card">
+            <span>Hist. entries</span>
+            <strong id="master-historical-count">0</strong>
+          </div>
+          <div class="meta-card">
+            <span>Target rows</span>
+            <strong id="master-target-count">0</strong>
+          </div>
+          <div class="register-actions-stack">
+            <button class="ghost-button" id="master-back" type="button">Back</button>
+            <a class="ghost-button" href="./index.html">Home</a>
+            <a class="ghost-button" href="./register.html">Register</a>
+            <a class="ghost-button" href="./monthly-register.html">Monthly</a>
+            <a class="ghost-button" href="./historical.html">Historical</a>
+            <button class="ghost-button" id="backup-master-data" type="button">Backup</button>
+            <label class="ghost-button backup-file-label" for="restore-master-backup">Restore backup</label>
+            <input class="backup-upload-input" id="restore-master-backup" type="file" accept=".json,application/json">
+            <button class="ghost-button" id="restore-master-data" type="button">Restore</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="panel master-shell">
+        <div class="panel-head master-head">
+          <div>
+            <p class="section-label">Master data studio</p>
+            <h2>Maintain outlet, Hist., and target reference details</h2>
+          </div>
+          <div class="tab-row">
+            <button class="ghost-button master-tab active" type="button" data-master-tab="daily">Daily import</button>
+            <button class="ghost-button master-tab" type="button" data-master-tab="outlets">Outlet master</button>
+            <button class="ghost-button master-tab" type="button" data-master-tab="historical">Hist. data</button>
+            <button class="ghost-button master-tab" type="button" data-master-tab="targets">Targets</button>
+          </div>
+        </div>
+
+        <div class="upload-status" id="master-status"></div>
+
+        <section class="master-tab-panel is-active" data-master-panel="daily">
+          <div class="master-import-panel">
+            <div class="panel-head">
+              <div>
+                <p class="section-label">Live import</p>
+                <h2>Upload daily sales row file</h2>
+              </div>
+            </div>
+            <div class="upload-panel master-upload-panel">
+              <div>
+                <p class="subtle-note">
+                  Choose your daily raw Excel export or CSV and the dashboard will rebuild automatically.
+                </p>
+                <p class="subtle-note upload-note">
+                  Supported columns:
+                  <code>Billing Date</code>,
+                  <code>Sales Group Desc</code>,
+                  <code>Ship-to-Party Name</code>,
+                  <code>Ship-to Party</code>,
+                  <code>Material Description</code>,
+                  <code>Volume</code>,
+                  and optional <code>Billing Document</code>, <code>Plant Description</code>, and <code>Outlet Type</code>.
+                </p>
+              </div>
+              <div class="upload-actions">
+                <label class="file-picker">
+                  <span>Daily sales file</span>
+                  <input type="file" id="csv-upload" accept=".csv,.xlsx,.xlsm,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                </label>
+                <button class="ghost-button" id="restore-built-in" type="button">Use built-in data</button>
+              </div>
+            </div>
+            <div class="upload-status" id="upload-status"></div>
+          </div>
+        </section>
+
+        <section class="master-tab-panel" data-master-panel="outlets">
+          <div class="master-grid">
+            <form class="master-form" id="outlet-master-form">
+              <div class="panel-head">
+                <div>
+                  <p class="section-label">Outlet master</p>
+                  <h2>Add or update a retail outlet</h2>
+                </div>
+              </div>
+              <div class="master-form-grid">
+                <label>
+                  <span>SAP code</span>
+                  <input type="text" name="sapCode" placeholder="41050001" required>
+                </label>
+                <label>
+                  <span>Outlet name</span>
+                  <input type="text" name="outletName" placeholder="New outlet name" required>
+                </label>
+                <label>
+                  <span>Retail region</span>
+                  <input type="text" name="salesArea" placeholder="SAGAR" required>
+                </label>
+                <label>
+                  <span>Appointed on</span>
+                  <input type="date" name="appointedOn">
+                </label>
+                <label>
+                  <span>Outlet type</span>
+                  <select name="outletType">
+                    <option value="Standard">Standard</option>
+                    <option value="Project Abhuyaday">Project Abhuyaday</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Plant</span>
+                  <input type="text" name="plant" placeholder="1436">
+                </label>
+                <label class="master-form-wide">
+                  <span>Notes</span>
+                  <input type="text" name="notes" placeholder="Optional appointment note">
+                </label>
+              </div>
+              <div class="toolbar-actions">
+                <button class="solid-button" type="submit">Save outlet</button>
+                <button class="ghost-button" id="cancel-outlet-edit" type="button">Clear form</button>
+              </div>
+            </form>
+
+            <div class="master-list-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-label">Saved outlets</p>
+                  <h2>Retail outlet master list</h2>
+                </div>
+                <div class="toolbar-actions">
+                  <button class="ghost-button" id="export-outlet-master-excel" type="button">Export Excel</button>
+                </div>
+              </div>
+              <div class="table-shell compact-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>SAP code</th>
+                      <th>Outlet</th>
+                      <th>Region</th>
+                      <th>Appointed</th>
+                      <th>Type</th>
+                      <th>Plant</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="outlet-master-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="master-tab-panel" data-master-panel="historical">
+          <div class="master-import-panel">
+            <div class="panel-head">
+              <div>
+                <p class="section-label">Hist. backup import</p>
+                <h2>Upload your Hist. Excel backup</h2>
+              </div>
+            </div>
+            <form class="master-form" id="historical-import-form">
+              <div class="master-form-grid">
+                <label class="master-form-wide">
+                  <span>Hist. Excel files</span>
+                  <input id="historical-excel-upload" type="file" accept=".xlsx,.xlsm,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" multiple>
+                </label>
+                <label>
+                  <span>Product mapping</span>
+                  <select id="historical-import-product" name="product">
+                    <option value="AUTO">Auto detect from file or export</option>
+                    <option value="MS">MS</option>
+                    <option value="HSD">HSD</option>
+                    <option value="Power">Power</option>
+                  </select>
+                </label>
+              </div>
+              <p class="subtle-note">
+                Use either matrix backups like <code>MS HIST.xlsx</code> and <code>HSD HIST.xlsx</code>, or a raw export
+                file like <code>Apr-Mar 26 EXPORT.XLSX</code>. Export files can load MS, HSD, and Power Hist. together.
+              </p>
+              <p class="subtle-note">
+                Large yearly export files can take a little longer to import because the page builds Hist. values
+                for every outlet and day.
+              </p>
+              <div class="toolbar-actions">
+                <button class="solid-button" type="submit">Import Hist. Excel</button>
+              </div>
+            </form>
+            <div class="master-import-list" id="historical-import-list"></div>
+          </div>
+
+          <div class="master-grid">
+            <form class="master-form" id="historical-master-form">
+              <div class="panel-head">
+                <div>
+                  <p class="section-label">Hist. data</p>
+                  <h2>Add manual Hist. reference</h2>
+                </div>
+              </div>
+              <div class="master-form-grid">
+                <label class="master-form-wide">
+                  <span>Outlet</span>
+                  <select id="historical-outlet-select" name="sapCode" required></select>
+                </label>
+                <label>
+                  <span>Product</span>
+                  <select name="product">
+                    <option value="MS">MS</option>
+                    <option value="HSD">HSD</option>
+                    <option value="Power">Power</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Reference date</span>
+                  <input type="date" name="referenceDate" required>
+                </label>
+                <label>
+                  <span>Hist. KL</span>
+                  <input type="number" step="0.001" min="0.001" name="historicalKl" placeholder="12.5" required>
+                </label>
+                <label class="master-form-wide">
+                  <span>Note</span>
+                  <input type="text" name="note" placeholder="Optional note for this Hist. record">
+                </label>
+              </div>
+              <p class="subtle-note">
+                Hist. comparison in the register uses the same outlet and calendar day pattern as the workbook
+                Hist. sheets and imported export Hist.
+              </p>
+              <div class="toolbar-actions">
+                <button class="solid-button" type="submit">Save Hist. data</button>
+              </div>
+            </form>
+
+            <div class="master-list-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-label">Saved Hist.</p>
+                  <h2>Manual Hist. reference list</h2>
+                </div>
+              </div>
+              <div class="table-shell compact-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Outlet</th>
+                      <th>SAP code</th>
+                      <th>Product</th>
+                      <th>Reference date</th>
+                      <th>Hist. KL</th>
+                      <th>Note</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="historical-master-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="master-tab-panel" data-master-panel="targets">
+          <div class="master-grid">
+            <form class="master-form" id="target-master-form">
+              <div class="panel-head">
+                <div>
+                  <p class="section-label">Sales targets</p>
+                  <h2>Add month-wise sales-area target KL</h2>
+                </div>
+              </div>
+              <div class="master-form-grid">
+                <label>
+                  <span>Target month</span>
+                  <input type="month" id="target-month" name="targetMonth" required>
+                </label>
+                <label class="master-form-wide">
+                  <span>Sales area</span>
+                  <select id="target-area-select" name="salesArea" required></select>
+                </label>
+                <label>
+                  <span>MS target KL</span>
+                  <input type="number" step="0.001" min="0" name="msTarget" placeholder="0">
+                </label>
+                <label>
+                  <span>HSD target KL</span>
+                  <input type="number" step="0.001" min="0" name="hsdTarget" placeholder="0">
+                </label>
+                <label>
+                  <span>Power target KL</span>
+                  <input type="number" step="0.001" min="0" name="powerTarget" placeholder="0">
+                </label>
+                <label>
+                  <span>Lube target KL</span>
+                  <input type="number" step="0.001" min="0" name="lubeTarget" placeholder="0">
+                </label>
+                <label>
+                  <span>DEF target KL</span>
+                  <input type="number" step="0.001" min="0" name="defTarget" placeholder="0">
+                </label>
+                <label class="master-form-wide">
+                  <span>Note</span>
+                  <input type="text" name="note" placeholder="Optional target note">
+                </label>
+              </div>
+              <p class="subtle-note">
+                Home page target charts compare monthly present KL against the saved target for the selected month.
+              </p>
+              <div class="toolbar-actions">
+                <button class="solid-button" type="submit">Save target</button>
+                <button class="ghost-button" id="cancel-target-edit" type="button">Clear form</button>
+              </div>
+            </form>
+
+            <div class="master-list-panel">
+              <div class="panel-head">
+                <div>
+                  <p class="section-label">Saved targets</p>
+                  <h2>Sales-area target list</h2>
+                </div>
+                <div class="toolbar-actions">
+                  <button class="ghost-button" id="export-target-master-excel" type="button">Export Excel</button>
+                </div>
+              </div>
+              <div class="table-shell compact-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Month</th>
+                      <th>Sales area</th>
+                      <th>MS</th>
+                      <th>HSD</th>
+                      <th>Power</th>
+                      <th>Lube</th>
+                      <th>DEF</th>
+                      <th>Note</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="target-master-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <script src="./sales-data.js"></script>
+    <script src="./vendor/jszip.min.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Historical Sales Data</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body data-page="historical">
+    <div class="page-shell">
+      <header class="hero panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Historical data</p>
+          <h1>Hist. sales data view</h1>
+          <p class="hero-text">
+            View the historical reference data used for MS, HSD, and Power comparison, grouped by sales area and
+            available as outlet/date rows.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-card">
+            <span>Data source</span>
+            <strong id="source-file">-</strong>
+          </div>
+          <div class="meta-card">
+            <span>Data period</span>
+            <strong id="source-period">-</strong>
+          </div>
+          <div class="meta-card">
+            <span>Generated</span>
+            <strong id="generated-at">-</strong>
+          </div>
+          <div class="register-actions-stack">
+            <a class="ghost-button" href="./index.html">Home</a>
+            <a class="ghost-button" href="./register.html">Register</a>
+            <a class="ghost-button" href="./monthly-register.html">Monthly</a>
+            <a class="ghost-button" href="./master.html">Master</a>
+            <button class="solid-button" id="print-view" type="button">Print or PDF</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="panel register-toolbar">
+        <div class="panel-head register-head">
+          <div>
+            <p class="section-label">Filters</p>
+            <h2>Generate your historical view</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="latest-day" type="button">Latest day</button>
+            <button class="ghost-button" id="full-period" type="button">Full period</button>
+            <button class="ghost-button" id="reset-filters" type="button">Reset</button>
+            <button class="solid-button" id="export-historical-excel" type="button">Export historical Excel</button>
+          </div>
+        </div>
+        <div class="filter-grid">
+          <label>
+            <span>Start date</span>
+            <input type="date" id="start-date">
+          </label>
+          <label>
+            <span>End date</span>
+            <input type="date" id="end-date">
+          </label>
+          <label>
+            <span>Sales area</span>
+            <select id="sales-area"></select>
+          </label>
+          <label>
+            <span>Depot</span>
+            <select id="plant-filter"></select>
+          </label>
+          <label>
+            <span>Outlet selection</span>
+            <select id="outlet-select"></select>
+          </label>
+          <label>
+            <span>Quick search</span>
+            <input type="search" id="outlet-search" placeholder="Search outlet or SAP code">
+          </label>
+          <label>
+            <span>Outlet type</span>
+            <select id="pa-filter">
+              <option value="all">All outlets</option>
+              <option value="project">Project Abhuyaday only</option>
+              <option value="non-project">Non-Project outlets</option>
+            </select>
+          </label>
+        </div>
+        <div class="active-summary" id="active-summary"></div>
+      </section>
+
+      <section class="metrics-grid" id="historical-metrics"></section>
+
+      <section class="panel register-panel historical-area-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Sales area wise sales</p>
+            <h2>Historical sales by sales area</h2>
+          </div>
+          <span class="panel-note" id="historical-area-note">0 sales areas</span>
+        </div>
+        <div class="table-shell compact-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Sales area</th>
+                <th>MS Hist.</th>
+                <th>HSD Hist.</th>
+                <th>Power Hist.</th>
+                <th>Total Hist.</th>
+                <th>Outlets</th>
+                <th>Active dates</th>
+              </tr>
+            </thead>
+            <tbody id="historical-area-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel register-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Hist. register</p>
+            <h2>Historical sales data rows</h2>
+          </div>
+          <span class="panel-note" id="historical-count-note">0 Hist. rows</span>
+        </div>
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Reference date</th>
+                <th>Sales area</th>
+                <th>Outlet</th>
+                <th>Product</th>
+                <th>Hist. KL</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="historical-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <script src="./sales-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

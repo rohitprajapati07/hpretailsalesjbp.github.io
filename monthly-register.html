@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Monthly Sales Register</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body data-page="monthly">
+    <div class="page-shell">
+      <header class="hero panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Monthly register</p>
+          <h1>Monthly sales register</h1>
+          <p class="hero-text">
+            This page groups the current selection by month and outlet, with present sales, Hist. sales, growth,
+            and Power conversion in one register view.
+          </p>
+        </div>
+        <div class="hero-meta">
+          <div class="meta-card">
+            <span>Data source</span>
+            <strong id="source-file">-</strong>
+          </div>
+          <div class="meta-card">
+            <span>Data period</span>
+            <strong id="source-period">-</strong>
+          </div>
+          <div class="meta-card">
+            <span>Generated</span>
+            <strong id="generated-at">-</strong>
+          </div>
+          <div class="register-actions-stack">
+            <a class="ghost-button" href="./index.html">Home</a>
+            <a class="ghost-button" href="./register.html">Daily register</a>
+            <a class="ghost-button" href="./historical.html">Historical</a>
+            <a class="ghost-button" href="./master.html">Master page</a>
+            <button class="solid-button" id="print-view" type="button">Print or PDF</button>
+          </div>
+        </div>
+      </header>
+
+      <section class="panel register-toolbar">
+        <div class="panel-head register-head">
+          <div>
+            <p class="section-label">Current selection</p>
+            <h2>Monthly register from the home page filters</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="full-period" type="button">Full period</button>
+            <button class="solid-button" id="export-monthly-register-excel" type="button">Export monthly Excel</button>
+          </div>
+        </div>
+        <div class="filter-grid">
+          <label>
+            <span>Start date</span>
+            <input type="date" id="start-date">
+          </label>
+          <label>
+            <span>End date</span>
+            <input type="date" id="end-date">
+          </label>
+          <label>
+            <span>Sales area</span>
+            <select id="sales-area"></select>
+          </label>
+          <label>
+            <span>Depot</span>
+            <select id="plant-filter"></select>
+          </label>
+          <label>
+            <span>Outlet selection</span>
+            <select id="outlet-select"></select>
+          </label>
+          <label>
+            <span>Quick search</span>
+            <input type="search" id="outlet-search" placeholder="Search outlet or SAP code">
+          </label>
+          <label>
+            <span>Outlet type</span>
+            <select id="pa-filter">
+              <option value="all">All outlets</option>
+              <option value="project">Project Abhuyaday only</option>
+              <option value="non-project">Non-Project outlets</option>
+            </select>
+          </label>
+        </div>
+        <div class="active-summary" id="active-summary"></div>
+      </section>
+
+      <section class="metrics-grid" id="metrics-grid"></section>
+
+      <section class="panel bars-panel area-mix-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Sales area mix</p>
+            <h2>Present vs Hist. by area</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="download-area-png" type="button">Download PNG</button>
+            <button class="ghost-button" id="download-area-jpeg" type="button">Download JPEG</button>
+            <button class="ghost-button" id="export-area-excel" type="button">Export Excel</button>
+            <span class="panel-note">Monthly MS, HSD, and Power comparison by sales area</span>
+          </div>
+        </div>
+        <div id="area-bars" class="bars-wrap area-donut-grid-wrap"></div>
+      </section>
+
+      <section class="panel bars-panel target-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Sales targets</p>
+            <h2>Present vs target by area</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="download-target-png" type="button">Download PNG</button>
+            <button class="ghost-button" id="download-target-jpeg" type="button">Download JPEG</button>
+            <button class="ghost-button" id="export-target-excel" type="button">Export Excel</button>
+            <span class="panel-note">Monthly achievement against saved area targets</span>
+          </div>
+        </div>
+        <div id="target-charts" class="bars-wrap area-donut-grid-wrap"></div>
+      </section>
+
+      <section class="panel register-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Monthly register</p>
+            <h2>Monthly sales register rows</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="toggle-monthly-register" type="button">View monthly register</button>
+            <span class="panel-note">Present and Hist. values shown in KL</span>
+          </div>
+        </div>
+        <div class="table-shell hidden" id="monthly-register-list-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Sales area</th>
+                <th>Outlet</th>
+                <th>MS</th>
+                <th>MS Hist.</th>
+                <th>MS growth</th>
+                <th>HSD</th>
+                <th>HSD Hist.</th>
+                <th>HSD growth</th>
+                <th>Power</th>
+                <th>Power Hist.</th>
+                <th>Power growth</th>
+                <th>Lube</th>
+                <th>DEF</th>
+                <th>Power conversion</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="monthly-register-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel summary-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Outlet summary</p>
+            <h2>Best performing outlets in the current monthly view</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="toggle-outlet-summary" type="button">View outlet summary</button>
+            <button class="ghost-button" id="export-summary" type="button">Export best performance CSV</button>
+            <button class="ghost-button" id="export-summary-excel" type="button">Export best performance Excel</button>
+            <span class="panel-note">Aggregated across the selected date range</span>
+          </div>
+        </div>
+        <div class="table-shell compact-table hidden" id="outlet-summary-list-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Outlet</th>
+                <th>Sales area</th>
+                <th>Products</th>
+                <th>Total KL</th>
+                <th>Net volume</th>
+                <th>Active days</th>
+                <th>Documents</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="outlet-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel summary-panel nil-sale-panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">Nil sale outlets</p>
+            <h2>Outlet list with no sale</h2>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-button" id="toggle-nil-sale" type="button">View nil sale outlets</button>
+            <span class="panel-note" id="nil-sale-count">0 outlets</span>
+          </div>
+        </div>
+        <div class="table-shell compact-table nil-sale-table-shell hidden" id="nil-sale-list-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Outlet</th>
+                <th>SAP code</th>
+                <th>Sales area</th>
+                <th>Active days</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody id="nil-sale-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <script src="./sales-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
